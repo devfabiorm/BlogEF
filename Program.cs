@@ -10,36 +10,18 @@ using var context = new BlogDataContext();
 //Remove(context);
 //ListTags(context);
 //RetrieveWithoutMetadata(context);
+//InsertWithRefencedObjects(context);
+//RetrievePostsWithRelatedObjects(context);
 
-var user = new User
-{
-    Name = "Tester",
-    Slug = "tester",
-    Email = "tester@test,com",
-    Bio = "Testing",
-    Image = "https://test.com",
-    PasswordHash = "andaun123i2qnew9vhj"
-};
+var post = context
+    .Posts
+    .Include(x => x.Author)
+    .Include(x => x.Category)
+    .OrderByDescending(x => x.LastUpdateDate)
+    .FirstOrDefault();
 
-var category = new Category
-{
-    Name = "Backend",
-    Slug = "backend"
-};
-
-var post = new Post
-{
-    Author = user,
-    Category = category,
-    Body = "<p>Hello World</p>",
-    Slug = "comecando-com-ef-core",
-    Summary = "Neste artigo vamos aprender sobre EF Core",
-    Title = "Começando com EF Core",
-    CreateDate = DateTime.Now,
-    LastUpdateDate = DateTime.Now,
-};
-
-context.Posts.Add(post);
+post!.Author.Name = "Testador";
+context.Posts.Update(post);
 context.SaveChanges();
 
 static void AddTag(BlogDataContext context)
@@ -99,4 +81,52 @@ static void RetrieveWithoutMetadata(BlogDataContext context)
         .FirstOrDefault(x => x.Id == 3);
 
     Console.WriteLine($"Name: {tag!.Name}");
+}
+
+static void InsertWithRefencedObjects(BlogDataContext context)
+{
+    var user = new User
+    {
+        Name = "Tester",
+        Slug = "tester",
+        Email = "tester@test,com",
+        Bio = "Testing",
+        Image = "https://test.com",
+        PasswordHash = "andaun123i2qnew9vhj"
+    };
+
+    var category = new Category
+    {
+        Name = "Backend",
+        Slug = "backend"
+    };
+
+    var post = new Post
+    {
+        Author = user,
+        Category = category,
+        Body = "<p>Hello World</p>",
+        Slug = "comecando-com-ef-core",
+        Summary = "Neste artigo vamos aprender sobre EF Core",
+        Title = "Começando com EF Core",
+        CreateDate = DateTime.Now,
+        LastUpdateDate = DateTime.Now,
+    };
+
+    context.Posts.Add(post);
+    context.SaveChanges();
+}
+
+static void RetrievePostsWithRelatedObjects(BlogDataContext context)
+{
+    var posts = context
+    .Posts
+    .AsNoTracking()
+    .Include(x => x.Author)
+    .Include(x => x.Category)
+    .OrderByDescending(x => x.LastUpdateDate)
+    .ToList();
+
+    foreach (var post in posts)
+        Console.Write($"{post.Title} escrito por {post.Author?.Name} em {post.Category?.Name}");
 }
