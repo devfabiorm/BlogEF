@@ -11,6 +11,37 @@ using var context = new BlogDataContext();
 //ListTags(context);
 //RetrieveWithoutMetadata(context);
 
+var user = new User
+{
+    Name = "Tester",
+    Slug = "tester",
+    Email = "tester@test,com",
+    Bio = "Testing",
+    Image = "https://test.com",
+    PasswordHash = "andaun123i2qnew9vhj"
+};
+
+var category = new Category
+{
+    Name = "Backend",
+    Slug = "backend"
+};
+
+var post = new Post
+{
+    Author = user,
+    Category = category,
+    Body = "<p>Hello World</p>",
+    Slug = "comecando-com-ef-core",
+    Summary = "Neste artigo vamos aprender sobre EF Core",
+    Title = "Começando com EF Core",
+    CreateDate = DateTime.Now,
+    LastUpdateDate = DateTime.Now,
+};
+
+context.Posts.Add(post);
+context.SaveChanges();
+
 static void AddTag(BlogDataContext context)
 {
     var tag = new Tag { Name = "Vue", Slug = "vue" };

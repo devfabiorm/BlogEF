@@ -26,7 +26,7 @@ public class Post
     [Column("Summary", TypeName = "VARCHAR")]
     public string Summary { get; set; } = string.Empty;
     [Required]
-    [Column("Summary", TypeName = "TEXT")]
+    [Column("Body", TypeName = "TEXT")]
     public string Body { get; set; } = string.Empty;
     [Required]
     [MinLength(3)]
