@@ -12,17 +12,8 @@ using var context = new BlogDataContext();
 //RetrieveWithoutMetadata(context);
 //InsertWithRefencedObjects(context);
 //RetrievePostsWithRelatedObjects(context);
+//UpdatingPropertyOfRelatedObject(context);
 
-var post = context
-    .Posts
-    .Include(x => x.Author)
-    .Include(x => x.Category)
-    .OrderByDescending(x => x.LastUpdateDate)
-    .FirstOrDefault();
-
-post!.Author.Name = "Testador";
-context.Posts.Update(post);
-context.SaveChanges();
 
 static void AddTag(BlogDataContext context)
 {
@@ -129,4 +120,18 @@ static void RetrievePostsWithRelatedObjects(BlogDataContext context)
 
     foreach (var post in posts)
         Console.Write($"{post.Title} escrito por {post.Author?.Name} em {post.Category?.Name}");
+}
+
+static void UpdatingPropertyOfRelatedObject(BlogDataContext context)
+{
+    var post = context
+    .Posts
+    .Include(x => x.Author)
+    .Include(x => x.Category)
+    .OrderByDescending(x => x.LastUpdateDate)
+    .FirstOrDefault();
+
+    post!.Author.Name = "Testador";
+    context.Posts.Update(post);
+    context.SaveChanges();
 }
