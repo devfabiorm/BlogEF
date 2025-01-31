@@ -1,0 +1,58 @@
+using BlogEF.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace BlogEF.Data.Mappings;
+
+public class UserMap : IEntityTypeConfiguration<User>
+{
+    public void Configure(EntityTypeBuilder<User> builder)
+    {
+        //Table
+        builder.ToTable("User");
+
+        //Primary Key
+        builder.HasKey(x => x.Id);
+
+        //Identity
+        builder.Property(x => x.Id)
+            .ValueGeneratedOnAdd()
+            .UseIdentityColumn();
+
+        //Propeties
+        builder.Property(x => x.Name)
+            .IsRequired()
+            .HasColumnName("Name")
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(80);
+
+        builder.Property(x => x.Email)
+            .IsRequired()
+            .HasColumnType("VARCHAR")
+            .HasMaxLength(200);
+
+        builder.Property(x => x.PasswordHash)
+            .IsRequired()
+            .HasColumnType("VARCHAR")
+            .HasMaxLength(255);
+
+        builder.Property(x => x.Bio)
+            .IsRequired()
+            .HasColumnType("TEXT");
+
+        builder.Property(x => x.Image)
+            .IsRequired()
+            .HasColumnType("VARCHAR")
+            .HasMaxLength(2000);
+
+        builder.Property(x => x.Slug)
+            .IsRequired()
+            .HasColumnType("VARCHAR")
+            .HasMaxLength(80);
+
+        //Indexes
+        builder
+            .HasIndex(x => x.Slug, "IX_User_Slug")
+            .IsUnique();
+    }
+}
