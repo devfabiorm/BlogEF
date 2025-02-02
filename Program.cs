@@ -4,16 +4,38 @@ using Microsoft.EntityFrameworkCore;
 
 using var context = new BlogDataContext();
 
-//AddTag(context);
-//RetrieveTag(context);
-//Update(context);
-//Remove(context);
-//ListTags(context);
-//RetrieveWithoutMetadata(context);
-//InsertWithRefencedObjects(context);
-//RetrievePostsWithRelatedObjects(context);
-//UpdatingPropertyOfRelatedObject(context);
+// var user = new User
+// {
+//     Name = "John Santiago Shuawzinner",
+//     Bio = "Backend developer",
+//     Email = "j.santiago.shu@test.com",
+//     Image = "https;/imagegenerator.test/user/jsshu",
+//     PasswordHash = "A134F1CD42BGHA1B355A",
+//     Slug = "jonh-s-shu"
+// };
 
+// context.Users.Add(user);
+// context.SaveChanges();
+
+var user = context.Users.FirstOrDefault();
+
+var post = new Post
+{
+    Author = user!,
+    Body = "Meu artigo",
+    Category = new Category
+    {
+        Name = ".NET",
+        Slug = "dotnet"
+    },
+    CreateDate = DateTime.Now.ToUniversalTime(),
+    Slug = "meu-atigo",
+    Summary = "Neste artigo vamos conferir...",
+    Title = "Meu artigo"
+};
+
+context.Posts.Add(post);
+context.SaveChanges();
 
 static void AddTag(BlogDataContext context)
 {

@@ -26,7 +26,7 @@ public class CategoryMap : IEntityTypeConfiguration<Category>
             .HasColumnType("VARCHAR")
             .HasMaxLength(80);
 
-        builder.Property(x => x.Name)
+        builder.Property(x => x.Slug)
             .IsRequired() ///NOT NULL
             .HasColumnName("Slug") //Unnecessary
             .HasColumnType("VARCHAR")
