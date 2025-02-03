@@ -50,6 +50,8 @@ public class UserMap : IEntityTypeConfiguration<User>
             .HasColumnType("VARCHAR")
             .HasMaxLength(80);
 
+        builder.Property(x => x.GitHub);
+
         //Indexes
         builder
             .HasIndex(x => x.Slug, "IX_User_Slug")

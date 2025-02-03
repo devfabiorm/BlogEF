@@ -27,7 +27,7 @@ public class PostMap : IEntityTypeConfiguration<Post>
 
         builder.Property(x => x.Summary)
             .IsRequired()
-            .HasColumnType("VARHCAR")
+            .HasColumnType("VARCHAR")
             .HasMaxLength(255);
 
         builder.Property(x => x.Body)
@@ -46,8 +46,8 @@ public class PostMap : IEntityTypeConfiguration<Post>
 
         builder.Property(X => X.LastUpdateDate)
             .HasColumnType("SMALLDATETIME")
-            //.HasDefaultValueSql("GETDATE()");
-            .HasDefaultValue(DateTime.Now.ToUniversalTime());
+            .HasDefaultValueSql("GETDATE()");
+        //.HasDefaultValue(DateTime.Now.ToUniversalTime());
 
         //Indexes
         builder
