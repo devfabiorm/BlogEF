@@ -11,5 +11,5 @@ public class Post
     public DateTime LastUpdateDate { get; set; }
     public Category Category { get; set; } = default!;
     public User Author { get; set; } = default!;
-    public List<Tag> Tags { get; set; } = [];
+    public virtual List<Tag> Tags { get; set; } = []; ///Virtual enables EF Core Lazy Loading
 }

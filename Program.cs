@@ -1,10 +1,11 @@
 ﻿using BlogEF.Data;
 using BlogEF.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 using var context = new BlogDataContext();
 
+//Lazy Loading needs virtual access modifier on properties to enables EF Core loading automatically a related property on its access
+//Eager Loading you need explicitly use Inclue to load a related property
 var posts = await GetPosts(context);
 var tags = await context.Users.ToListAsync();
 
@@ -170,4 +171,16 @@ static void TestingMigrations(BlogDataContext context)
 static async Task<IEnumerable<Post>> GetPosts(BlogDataContext context)
 {
     return await context.Posts.ToListAsync(); ;
+}
+
+static List<Post> ListPostsWithPagination(BlogDataContext context, int skip = 0, int take = 25)
+{
+    var posts = context
+        .Posts
+        .AsNoTracking() //Use when no update or delete is needed
+        .Skip(0)
+        .Take(take)
+        .ToList();
+
+    return posts;
 }
