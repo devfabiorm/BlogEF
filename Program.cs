@@ -6,9 +6,12 @@ using var context = new BlogDataContext();
 
 //Lazy Loading needs virtual access modifier on properties to enables EF Core loading automatically a related property on its access
 //Eager Loading you need explicitly use Inclue to load a related property
-var posts = context.Posts
-    .Include(x => x.Author)
-    .ThenInclude(x => x.Roles); //Makes a subquery worsening perfomance - AVOID
+var posts = context.PostWithTagsCount;
+
+foreach (var post in posts)
+{
+    Console.WriteLine($"Post: {post.Name} has {post.Count} posts");
+}
 
 static void AddTag(BlogDataContext context)
 {
@@ -182,4 +185,12 @@ static List<Post> ListPostsWithPagination(BlogDataContext context, int skip = 0,
         .ToList();
 
     return posts;
+}
+
+static void TestingThenInclude(BlogDataContext context)
+{
+    var posts = context.Posts
+        .Include(x => x.Author)
+        .ThenInclude(x => x.Roles); //Makes a subquery worsening perfomance - AVOID
+
 }
