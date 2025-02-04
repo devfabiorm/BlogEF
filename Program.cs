@@ -1,41 +1,14 @@
 ﻿using BlogEF.Data;
 using BlogEF.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 using var context = new BlogDataContext();
 
-// var user = new User
-// {
-//     Name = "John Santiago Shuawzinner",
-//     Bio = "Backend developer",
-//     Email = "j.santiago.shu@test.com",
-//     Image = "https;/imagegenerator.test/user/jsshu",
-//     PasswordHash = "A134F1CD42BGHA1B355A",
-//     Slug = "jonh-s-shu"
-// };
+var posts = await GetPosts(context);
+var tags = await context.Users.ToListAsync();
 
-// context.Users.Add(user);
-// context.SaveChanges();
-
-var user = context.Users.FirstOrDefault();
-
-var post = new Post
-{
-    Author = user!,
-    Body = "Meu artigo",
-    Category = new Category
-    {
-        Name = ".NET",
-        Slug = "dotnet"
-    },
-    CreateDate = DateTime.Now.ToUniversalTime(),
-    Slug = "meu-atigo",
-    Summary = "Neste artigo vamos conferir...",
-    Title = "Meu artigo"
-};
-
-context.Posts.Add(post);
-context.SaveChanges();
+Console.WriteLine("Test"); ;
 
 static void AddTag(BlogDataContext context)
 {
@@ -156,4 +129,45 @@ static void UpdatingPropertyOfRelatedObject(BlogDataContext context)
     post!.Author.Name = "Testador";
     context.Posts.Update(post);
     context.SaveChanges();
+}
+
+static void TestingMigrations(BlogDataContext context)
+{
+    // var user = new User
+    // {
+    //     Name = "John Santiago Shuawzinner",
+    //     Bio = "Backend developer",
+    //     Email = "j.santiago.shu@test.com",
+    //     Image = "https;/imagegenerator.test/user/jsshu",
+    //     PasswordHash = "A134F1CD42BGHA1B355A",
+    //     Slug = "jonh-s-shu"
+    // };
+
+    // context.Users.Add(user);
+    // context.SaveChanges();
+
+    var user = context.Users.FirstOrDefault();
+
+    var post = new Post
+    {
+        Author = user!,
+        Body = "Meu artigo",
+        Category = new Category
+        {
+            Name = ".NET",
+            Slug = "dotnet"
+        },
+        CreateDate = DateTime.Now.ToUniversalTime(),
+        Slug = "meu-atigo",
+        Summary = "Neste artigo vamos conferir...",
+        Title = "Meu artigo"
+    };
+
+    context.Posts.Add(post);
+    context.SaveChanges();
+}
+
+static async Task<IEnumerable<Post>> GetPosts(BlogDataContext context)
+{
+    return await context.Posts.ToListAsync(); ;
 }
