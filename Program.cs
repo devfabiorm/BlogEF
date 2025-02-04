@@ -6,10 +6,9 @@ using var context = new BlogDataContext();
 
 //Lazy Loading needs virtual access modifier on properties to enables EF Core loading automatically a related property on its access
 //Eager Loading you need explicitly use Inclue to load a related property
-var posts = await GetPosts(context);
-var tags = await context.Users.ToListAsync();
-
-Console.WriteLine("Test"); ;
+var posts = context.Posts
+    .Include(x => x.Author)
+    .ThenInclude(x => x.Roles); //Makes a subquery worsening perfomance - AVOID
 
 static void AddTag(BlogDataContext context)
 {
